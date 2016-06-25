@@ -1,0 +1,18 @@
+NumCards
+NumPlayers
+Position
+trumpColor
+mycards
+
+cardformat:
+Narr: f(ool)
+Farbe: r1...y1
+       .    .
+	   r13..y13
+Zauberer: w(izard)
+
+routine:
+Enter each played card
+in your turn, propabilities are calculated => predicitions not taken account for!
+trick is given to player
+repeat 
