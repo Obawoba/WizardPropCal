@@ -6,11 +6,11 @@ program PropCal
   ! EC is followed by '[$NUM$m]' where $NUM$ is a format specific Number
   ! EC//'[91mr'//EC//'[0m <= is a red r and disables color afterwards
   	character(*), PARAMETER :: &
-  		EC = achar(27), ED = EC//'[0m', &
+  		EC = achar(27), ED = EC//'[00m', &
   		RED = EC//'[91m', GREEN = EC//'[92m', YELLOW = EC//'[93m', BLUE = EC//'[96m'
   	character(5),DIMENSION(4) :: ColorCodes ! Array that contains all these color codes
 
-  	integer :: NumCards = 0, NumPlayers = 0, Position = 0, CurrentCardColor
+  	integer :: NumCards = 0, NumPlayers = 0, Position = 0, CurrentCardColor, CurrentCardValue
   	character(3) :: TrumpCard , CurrentCard				!format: eg. 'g9' 'b12' 'n'
   	character(8) :: TrumpCardCC			!Added color coding(CC)
 
@@ -28,6 +28,7 @@ program PropCal
   ColorCodes(4)=YELLOW
 
 
+
   !print*,ColorCodes(1)
   !print*,ColorCodes(2)
   !print*,ColorCodes(3)
@@ -41,7 +42,8 @@ program PropCal
   		end do
   	end do
 
-  10 if(.TRUE.) then
+  10 continue
+    call PrintCards()
   		print*, "Play a Card!"
   		read*, CurrentCard
   		CurrentCardColor = getCardColorNumber(CurrentCard)
@@ -49,25 +51,37 @@ program PropCal
   		if(CurrentCardColor==6) then !wizard
   			if(Wizards>0)then
   				Wizards = Wizards - 1
+          print*, "It's a wizard!"
   			else
-  				print*, "Can't play that card!"
-  				Go to 10
+          print*, "Can't play that card!"
   			end if
+        Go to 10
 
-  		elseif(CurrentCardColor == 5) then !fool
+  		else if(CurrentCardColor == 5) then !fool
   			if(Fools>0)then
   				Fools = Fools - 1
+          print*, "It's a fool!"
   			else
   				print*, "Can't play that card!"
-  				Go to 10
   			end if
+        Go to 10
 
-  		else !normal card
+  		else if(CurrentCardColor>0) then!normal card
+        CurrentCardValue = getCardValue(CurrentCard)
+        if(CurrentCardValue > 0) then
+          if(CardsInGame(CurrentCardColor,CurrentCardValue)) then
+            CardsInGame(CurrentCardColor,CurrentCardValue) = .FALSE.
+            print*,"That was "//ColorCodes(CurrentCardColor)//CurrentCard//ED
+          else
+            print*,"This Card was already played"
+          end if
+          Go to 10
+        else
+          print*, "Something is odd"
+        end if
+      end if
+  	!end of continue
 
-  		end if
-  	end do
-
-  	end do
 
   	print*, "This program calculates card propabilities"
   	print*,
@@ -86,8 +100,6 @@ program PropCal
   	print*, "Valid colors are: " &
   					//RED//'r '//GREEN//'g '//BLUE//'b '//YELLOW//'y '//ED//'n'
   	read*, TrumpCard
-  	TrumpCardCC = TrumpCardCodeChar(TrumpCard)
-  	print*, TrumpCardCC
 
   contains
   	subroutine PrintCards()
@@ -95,7 +107,7 @@ program PropCal
   		character(2) :: CardValue					!Char that contains card number (1 to 13)
 
   		!print fools
-  		print*, repeat("N  ", Fools)				!prints  "N " repeated fools times
+  		print*, ' '//repeat("N  ", Fools)				!prints  "N " repeated fools times
 
   		!print the 1-13 cards
   		do i = 1,13												!for each card number
@@ -112,7 +124,7 @@ program PropCal
   		end do
 
   		!print Wizards
-  		print*, repeat("Z  ", Wizards)				!prints  "N " repeated fools times
+  		print*, ' '//repeat("Z  ", Wizards)				!prints  "N " repeated fools times
   	end subroutine
 
   	character(5) function getCardColorCode(Card)
@@ -155,18 +167,26 @@ program PropCal
   		end select
   	end function
 
+    !return the card number 1 to 13
+    integer function getCardValue(Card)
+      character(3),INTENT(IN) :: Card
+      if(Card(3:)==' ') then !One digit!
+        read(Card(2:2),'(i4)') getCardValue
+      else
+        read(Card(2:3),'(i4)') getCardValue
+      end if
+    end function
+
+    !obsolete
   	integer function ctoi(input)
   		character(*), INTENT(IN) :: input
   		character(2) :: tmp
-
   	end function
 
   	character(2) function itoc(input)
   		integer, INTENT(IN) :: input
   		character(12) :: tmp
   		write(tmp,*) input
-  		tmp = adjustl(tmp)
-  		itoc = tmp(:2)
+  		itoc = tmp(11:)
   	end function
-
   end program PropCal

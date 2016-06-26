@@ -1,9 +1,18 @@
 program test
-  implicit none
-  integer :: tmp
-  character(*), PARAMETER :: chr="1 "
-  tmp = ParseCardNumber(chr)
-  print*, tmp
+    implicit none
+    integer :: tmp
+    character(*), PARAMETER :: chr="myrest"
+    print*,chr(1:1)
+10  continue
+    print*, "Enter any number"
+    read*, tmp
+    print*, tmp
+    if(tmp>10) then
+      goto 10
+    end if
+
+    tmp = ParseCardNumber(chr)
+    print*, tmp
 contains
     integer function ParseCardNumber(Input)
       character(2),INTENT(IN) :: Input
