@@ -6,11 +6,13 @@ program PropCal
   ! EC is followed by '[$NUM$m]' where $NUM$ is a format specific Number
   ! EC//'[91mr'//EC//'[0m <= is a red r and disables color afterwards
   	character(*), PARAMETER :: &
-  		EC = achar(27), ED = EC//'[00m', &
-  		RED = EC//'[91m', GREEN = EC//'[92m', YELLOW = EC//'[93m', BLUE = EC//'[96m'
-  	character(5),DIMENSION(4) :: ColorCodes ! Array that contains all these color codes
+    EC = achar(27), ED = EC//'[00m', &
+      RED = EC//'[91m', GREEN = EC//'[92m',&
+      YELLOW = EC//'[93m', BLUE = EC//'[96m'
+    character(5),DIMENSION(4) :: ColorCodes ! Array that contains all these color codes
 
-  	integer :: NumCards = 0, NumPlayers = 0, Position = 0, CurrentCardColor, CurrentCardValue
+  	integer :: NumCards = 0, NumPlayers = 0, Position = 0, &
+    CurrentCardColor, CurrentCardValue
   	character(3) :: TrumpCard , CurrentCard				!format: eg. 'g9' 'b12' 'n'
   	character(8) :: TrumpCardCC			!Added color coding(CC)
 
