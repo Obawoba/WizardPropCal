@@ -1,25 +1,22 @@
-program test
-    implicit none
-    integer :: tmp
-    character(*), PARAMETER :: chr="myrest"
-    print*,chr(1:1)
-10  continue
-    print*, "Enter any number"
-    read*, tmp
-    print*, tmp
-    if(tmp>10) then
-      goto 10
-    end if
+module myType_mod
+  type myType
+    real::foo
+    integer::bar
+  end type myType
+end module
 
-    tmp = ParseCardNumber(chr)
-    print*, tmp
-contains
-    integer function ParseCardNumber(Input)
-      character(2),INTENT(IN) :: Input
-      if(Input(2:)==' ') then !One digit!
-        read(Input(:1),'(i4)') ParseCardNumber
-      else
-        read(Input(:2),'(i4)') ParseCardNumber
-      end if
-    end function
+program test
+  use myType_mod
+  implicit none
+
+  interface operator (>)
+      logical function compare(a,b)
+        type(myType),intent(in) :: a,b
+        compare = a%foo>b%foo
+      end function compare
+  end interface operator (>)
+
+  type(myType) :: tfoo, tbar
+  tfoo = card(1.,2); tbar = card(3.,4)
+  print*, tfoo>tbar
 end program test
