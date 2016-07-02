@@ -1,18 +1,12 @@
-NumCards
-NumPlayers
-Position
-trumpColor
-mycards
+card module:
+  char trump
 
-cardformat:
-Narr: f(ool)
-Farbe: r1...y1
-       .    .
-	   r13..y13
-Zauberer: w(izard)
+  card type:
+    char color
+    int value
 
-routine:
-Enter each played card
-in your turn, propabilities are calculated => predicitions not taken account for!
-trick is given to player
-repeat 
+  function: char(3) => type(card)
+
+  operator: card > card
+
+  

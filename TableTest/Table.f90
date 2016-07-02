@@ -29,8 +29,6 @@ program table
     write(*,'(a,i1,a,a,5/)',advance = "NO"), "Player ",i," Name: ", names(i)
   end do
 
-
-
   do round = 1, totalRounds
     do i = 1, numPlayers
       print*, names(i)//" prediciton:"

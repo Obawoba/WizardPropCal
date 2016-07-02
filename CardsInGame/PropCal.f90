@@ -9,7 +9,8 @@ program PropCal
     EC = achar(27), ED = EC//'[00m', &
       RED = EC//'[91m', GREEN = EC//'[92m',&
       YELLOW = EC//'[93m', BLUE = EC//'[96m'
-    character(5),DIMENSION(4) :: ColorCodes ! Array that contains all these color codes
+    ! Array that contains all these color codes
+    character(5),DIMENSION(4) :: ColorCodes
 
   	integer :: NumCards = 0, NumPlayers = 0, Position = 0, &
     CurrentCardColor, CurrentCardValue
