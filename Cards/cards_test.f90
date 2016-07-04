@@ -1,25 +1,24 @@
 program cardsTest
+  use cards
   implicit none
 
-  use cards
-
-  type(card) :: testCard
+  type(card) :: highestCard, someCard
   character(3) :: inputChar
+
+  trumpColor = 'r'
 
   print*,'play a card!'
   read*,inputChar
+  highestCard = getCard(inputchar)
+  print*, 'you played ',&
+    highestCard%color,highestCard%value
 
-  testCard = card(inputChar)
-  select case testCard % color
-    case ('r')
-      print*, 'red'
-    case ('g')
-  print*, 'green'
-    case ('b')
-  print*, 'blue'
-    case ('y')
-      print*, 'yellow'
-    case default
-  end select
-
+  print*, 'play another card!'
+  read*,inputChar
+  someCard = getCard(inputchar)
+  if(someCard>highestCard)then
+    print*, 'you beat that card!'
+  else
+    print*, 'that card was bad!'
+  end if
 end program cardsTest
